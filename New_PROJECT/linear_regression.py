@@ -8,7 +8,8 @@ class linear_regression :
 
     def __init__(self) :
         print("constructor hello")
-        
+        self.theta0_old = 0.0
+        self.theta1_old = 0.0   
         self.extract_data()
 
     def extract_data(self):
@@ -67,6 +68,27 @@ class linear_regression :
         print("donnees normalisee" ,self.value)
 
 
+
+
+    def estimatePrice(self, km):
+        return (self.theta0_old + (self.theta1_old * float(km)))
+
+    def print_val(self):
+        print(self.value)
+
+    def gradient_theta0(self):
+        sum = 0.0
+
+        for line in self.value:
+            sum +=  #u are working here
+    
+
+    def training_model(self, learning_rate, print_error):
+
+        
+
+    
+
         
 
             
@@ -81,4 +103,6 @@ if __name__ == "__main__":
     model = linear_regression()
     model.normalisation_data() #linear scaling method :) done
     #next step training model :D
+    # model.print_val()
+    
 
