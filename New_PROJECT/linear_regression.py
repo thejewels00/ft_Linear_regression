@@ -85,7 +85,18 @@ class linear_regression :
             line[0] = (float(line[0]) - self.min_x) / tmp_x
             line[1] = (float(line[1]) - self.min_y) / tmp_y
 
-        print("donnees normalisee" ,self.value)
+        # print("donnees normalisee" ,self.value)
+
+
+    def Denormalisation_data(self):
+        tmp_x = self.max_x - self.min_x
+        tmp_y = self.max_y - self.min_y
+        for line in self.value:
+            line[0] = (float(line[0]) * tmp_x) +  self.min_x
+            line[1] = (float(line[1]) * tmp_y) +  self.min_y
+            
+
+
 
 
 
@@ -157,11 +168,11 @@ class linear_regression :
         tmp = [list(tmp[0]), list(tmp[1])]
         plot_val = [[], []]
         for i in tmp[0]:
-            real_x = self.min_x + (self.max_x - self.min_x) * float(i)
-            plot_val[0].append(real_x)
+            # real_x = self.min_x + (self.max_x - self.min_x) * float(i)
+            plot_val[0].append(float(i))
         for i in tmp[1]:
-            real_y = self.min_y + (self.max_y - self.min_y) * float(i)
-            plot_val[1].append(real_y)
+            # real_y = self.min_y + (self.max_y - self.min_y) * float(i)
+            plot_val[1].append(float(i))
 
         # Tracé des points de données réelles
         plt.title('Real Values and Regression Line')
@@ -185,8 +196,11 @@ class linear_regression :
         plt.show()
 
 
-    # def print_acurancy(self):
-    #     print("the mean absolute error is : ", self.mean_absolute_error())
+    def print_acurancy(self):
+
+
+        self.Denormalisation_data()
+        print("the mean absolute error is : ", self.mean_absolute_error())
         
         
 

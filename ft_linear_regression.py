@@ -69,6 +69,7 @@ class linear_regression :
             else:
                 i = 1
 
+        i = 0
         #this part used to standarize the data
         for line in self.value :
             if(i > 0):
@@ -123,6 +124,7 @@ class linear_regression :
         self.learning_rate = learning_rate
 
         self.standarize_data()
+        print("data")
         while self.delta_mse > 0.0000001 or self.delta_mse < -0.0000001:
             self.theta0 = self.temp_theta_0
             self.theta1 = self.temp_theta_1
@@ -133,15 +135,15 @@ class linear_regression :
             self.delta_mse = self.curent_mse - self.prev_mse
 
 
-            self.theta_1 = (self.max_y - self.min_y) * self.theta_1 / \
-                (self.max_x - self.min_x)
-            self.theta_0 = self.min_y + ((self.max_y - self.min_y) * \
-                self.theta_0) + self.theta_1 * (1 - self.min_x)
+        self.theta_1 = (self.max_y - self.min_y) * self.theta1 / \
+            (self.max_x - self.min_x)
+        self.theta_0 = self.min_y + ((self.max_y - self.min_y) * \
+            self.theta0) + self.theta1 * (1 - self.min_x)
         
-            if(print_error ==  1):
-                print(f"theta0 = {self.temp_theta_0} theta1 = {self.temp_theta_1} MSE = {self.curent_mse}")
+        if(print_error ==  1):
+            print(f"theta0 = {self.theta_0} theta1 = {self.theta_1} MSE = {self.curent_mse}")
             
-            self.save_theta()
+        self.save_theta()
 
     def plot_value(self):
         tmp_val = self.value
