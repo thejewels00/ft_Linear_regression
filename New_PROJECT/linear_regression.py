@@ -8,9 +8,14 @@ class linear_regression :
 
     def __init__(self) :
         print("constructor hello")
-        self.theta0_old = 0.0
-        self.theta1_old = 0.0   
+        self.theta0 = 0.0
+        self.theta1 = 0.0   
+        self.learning_rate = 0.001
+        self.mse = 0.0
+        self.mse_old = 0.0
         self.extract_data()
+
+
 
     def extract_data(self):
         if len(sys.argv) == 1:
@@ -33,14 +38,28 @@ class linear_regression :
             value_obj = csv.reader(file)
             # print(type(value))
             for row in value_obj:
-                print(row) #to remove
+                # print(row) #to remove
                 self.value.append(row)
 
 
-            print("all value : ", self.value) #to remove
+            # print("all value : ", self.value) #to remove
             #print(type(self.value))
             del(self.value[0])
+            # self.mse = self.mean_absolute_error()
 
+
+    def mean_absolute_error(self):
+        i = 1
+        sum = 0
+        for line in self.value:
+            sum += abs(self.estimatePrice(line[0]) - float(line[1]))
+            i += 1
+
+
+        print("MAE, ", (sum / i))
+
+        return (sum / i)            
+        
 
     def normalisation_data(self):
         i = 0
@@ -71,38 +90,70 @@ class linear_regression :
 
 
     def estimatePrice(self, km):
-        return (self.theta0_old + (self.theta1_old * float(km)))
+        return (self.theta0 + (self.theta1 * float(km)))
 
     def print_val(self):
-        print(self.value)
+        # print(self.value)
+        print(f"theta0 = {self.theta0} theta1 = {self.theta1} MAS = {self.mse}")
+        
 
     def gradient_theta0(self):
         sum = 0.0
+        i = 1
 
         for line in self.value:
-            sum +=  #u are working here
-    
-
-    def training_model(self, learning_rate, print_error):
-
-        
-
-    
-
-        
-
-            
+            sum += (self.estimatePrice(line[0]) - float(line[1])) 
+            i += 1
+        return (self.learning_rate * (sum / i))
 
 
 
 
+    def gradient_theta1(self):
+        sum = 0.0
+        i = 1
+
+        for line in self.value:
+            sum += (self.estimatePrice(line[0]) - float(line[1])) * float(line[0])
+            i += 1
+        return (self.learning_rate * (sum / i))
+
+    def training_model(self):
+        self.mse = self.mean_absolute_error()
+
+        mse_delta = self.mse
+        while mse_delta > 0.0000001 or mse_delta < -0.0000001:
+            theta0_slop = self.gradient_theta0()
+            theta1_slop = self.gradient_theta1()
+
+
+            self.theta0 -= theta0_slop
+            self.theta1 -= theta1_slop
+
+
+            self.mse_old = self.mse
+            self.mse = self.mean_absolute_error()
+            mse_delta = self.mse - self.mse_old
+
+        # self.theta1 = (self.max_y - self.min_y) * self.theta1 / \
+        #         (self.max_x - self.min_x)
+        # self.theta0 = self.min_y + ((self.max_y - self.min_y) * \
+        #         self.theta0) + self.theta1 * (1 - self.min_x)
+        self.save_thetas()
+        print("delta: ", mse_delta)
+
+
+    def save_thetas(self):
+        with open("values.psv", 'w') as file:
+            file.write(f"{self.theta0}|{self.theta1}")
 
 
 if __name__ == "__main__":
 
     model = linear_regression()
     model.normalisation_data() #linear scaling method :) done
-    #next step training model :D
-    # model.print_val()
+    model.training_model()
+    #next ploting data  - bonus
+    model.print_val()
     
 
