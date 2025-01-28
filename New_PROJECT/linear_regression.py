@@ -197,12 +197,22 @@ class linear_regression :
 
 
     def print_acurancy(self):
-
-
         self.Denormalisation_data()
         print("the mean absolute error is : ", self.mean_absolute_error())
         
         
+    def r2_score(self):
+        actual_values = [float(line[1]) for line in self.value]
+        predicted_values = [self.estimatePrice(float(line[0])) for line in self.value]
+        mean_y = sum(actual_values) / len(actual_values)
+
+        # Calculate the total sum of squares (TSS) and residual sum of squares (RSS)
+        tss = sum((y - mean_y) ** 2 for y in actual_values)
+        rss = sum((y - y_pred) ** 2 for y, y_pred in zip(actual_values, predicted_values))
+
+        # Compute R²
+        r2 = 1 - (rss / tss)
+        return r2
 
 
 
@@ -216,7 +226,6 @@ if __name__ == "__main__":
     # model.print_val()
 
     model.print_acurancy() #fixing this shit 
-
     model.plot_value()
     
 
